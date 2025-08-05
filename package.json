@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "concurrently": "^9.2.0"
+  },
+  "scripts": {
+    "start": "concurrently \"cd bigram-backend && rails s\" \"cd bigram-frontend && npm start\""
+  }
+}
