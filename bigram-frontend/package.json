@@ -6,13 +6,13 @@
   "proxy": "http://localhost:3000",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "react-scripts build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "react-scripts start",
-    "build": "react-scripts build"
+    "start": "react-scripts start"
   },
   "dependencies": {
+    "ag-charts-react": "^12.1.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
