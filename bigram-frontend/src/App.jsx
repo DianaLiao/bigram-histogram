@@ -1,33 +1,54 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import TextSubmitForm from '../components/TextSubmitForm.jsx'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [inputText, setInputText] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [ngramData, setNgramData] = useState(null)
 
-  return (
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    setIsLoading(true)
+    setError(null)
+
+    const requestBody = {
+      text: inputText
+    }
+
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/bigrams_count', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      setNgramData(data)
+    } catch (error) {
+      setError(error.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <TextSubmitForm
+        inputText={inputText}
+        setInputText={setInputText}
+        handleSubmit={handleSubmit}
+        isLoading={isLoading}
+      />
     </>
   )
 }
