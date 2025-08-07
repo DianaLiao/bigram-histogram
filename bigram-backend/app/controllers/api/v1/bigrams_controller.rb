@@ -2,8 +2,8 @@ class Api::V1::BigramsController < ApplicationController
   def count
     text = params[:text]
 
-    unless text.present?
-      render json: { error: "Text is required" }, status: :bad_request
+    if text.split.size < 2
+      render json: { error: "Please enter at least 2 words of text." }, status: :bad_request
       return
     end
 
